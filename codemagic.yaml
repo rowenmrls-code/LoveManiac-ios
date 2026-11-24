@@ -7,11 +7,13 @@ workflows:
         script: |
           curl -L "https://pixeldrain.com/api/file/VAVc3Wxo" -o project.zip
           unzip -q project.zip
-          if [ -d "LoveManiac_iOS" ]; then mv LoveManiac_iOS/* .; fi
       - name: Build Xcode Project
         script: |
-          xcodebuild -project LoveManiac.xcodeproj \
-            -scheme LoveManiac \
+          PROJ=$(find . -maxdepth 3 -name "*.xcodeproj" | head -n 1)
+          SCHEME=$(basename "$PROJ" .xcodeproj)
+          echo "Found project: $PROJ (scheme: $SCHEME)"
+          xcodebuild -project "$PROJ" \
+            -scheme "$SCHEME" \
             -configuration Release \
             -sdk iphoneos \
             -derivedDataPath build \
@@ -25,6 +27,7 @@ workflows:
           zip -r LoveManiac.ipa Payload
     artifacts:
       - LoveManiac.ipa
+
 
 
 
