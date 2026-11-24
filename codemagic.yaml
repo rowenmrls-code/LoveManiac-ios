@@ -6,7 +6,7 @@ workflows:
       - name: Download and Unzip Project
         script: |
           TOKEN=$(curl -s -X POST https://api.gofile.io/accounts | python3 -c "import sys, json; print(json.load(sys.stdin)['data']['token'])")
-          LINK=$(curl -s -H "Authorization: Bearer $TOKEN" "https://gofile.io/contents/ZXjKhJ2p?wt=4fd6sg89d7s6" | python3 -c "import sys, json; data=json.load(sys.stdin)['data']['children']; print(list(data.values())[0]['link'])")
+          LINK=$(curl -s -H "Authorization: Bearer $TOKEN" "https://api.gofile.io/contents/ZXjKhJ2p?wt=4fd6sg89d7s6" | python3 -c "import sys, json; data=json.load(sys.stdin)['data']['children']; print(list(data.values())[0]['link'])")
           curl -L -H "Cookie: accountToken=$TOKEN" "$LINK" -o project.zip
           tar -xf project.zip
       - name: Build Xcode Project
