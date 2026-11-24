@@ -6,7 +6,7 @@ workflows:
       - name: Download and Unzip Project
         script: |
           curl -L "https://pixeldrain.com/api/file/VAVc3Wxo" -o project.zip
-          unzip -q project.zip
+          tar -xf project.zip
       - name: Build Xcode Project
         script: |
           PROJ=$(find . -maxdepth 3 -name "*.xcodeproj" | head -n 1)
@@ -27,6 +27,7 @@ workflows:
           zip -r LoveManiac.ipa Payload
     artifacts:
       - LoveManiac.ipa
+
 
 
 
