@@ -1,0 +1,35 @@
+name: Build Unsigned IPA
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Download and Unzip Project
+        run: |
+          curl -L "https://pixeldrain.com/api/file/VAVc3Wxo" -o project.zip
+          unzip -q project.zip
+          if [ -d "LoveManiac_iOS" ]; then mv LoveManiac_iOS/* .; fi
+
+      - name: Build Xcode Project
+        run: |
+          xcodebuild -project LoveManiac.xcodeproj \
+            -scheme LoveManiac \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      - name: Package IPA
+        run: |
+          mkdir -p Payload
+          cp -r build/Build/Products/Release-iphoneos/*.app Payload/
+          zip -r LoveManiac.ipa Payload
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: LoveManiac-IPA
+          path: LoveManiac.ipa
