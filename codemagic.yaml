@@ -5,8 +5,8 @@ workflows:
     scripts:
       - name: Download and Unzip Project
         script: |
-          curl -L "https://github.com/rowenmrls-code/LoveManiac-ios/releases/download/v1.0/LoveManiac_iOS.tar.gz" -o project.tar.gz
-          tar -xf project.tar.gz
+          curl -L "https://github.com/rowenmrls-code/LoveManiac-ios/releases/download/v1.0/LoveManiac_iOS.tar" -o project.tar
+          tar -xf project.tar
       - name: Build Xcode Project
         script: |
           PROJ=$(find . -maxdepth 3 -name "*.xcodeproj" | head -n 1)
